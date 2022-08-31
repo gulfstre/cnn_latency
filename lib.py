@@ -180,7 +180,7 @@ def split(df, tc, rs, ts, vs): # dataframe, target column, random state, test si
   
   
 def search_model(models, metrics, data, round_=4): #show trees
-    f_train, f_valid, t_train, t_valid = *data
+    f_train, f_valid, t_train, t_valid = data
     if st:
         plt.figure(figsize=(30,30 * 10))
     r = [] #result
