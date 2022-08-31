@@ -179,7 +179,7 @@ def split(df, tc, rs, ts, vs): # dataframe, target column, random state, test si
     return f_train, f_valid, f_test, t_train, t_valid, t_test
   
   
-def search_model(models, metrics, [f_train, f_valid, t_train, t_valid], st=False, round_=4): #show trees
+def search_model(models, metrics, [f_train, f_valid, t_train, t_valid], round_=4): #show trees
     if st:
         plt.figure(figsize=(30,30 * 10))
     r = [] #result
@@ -192,13 +192,6 @@ def search_model(models, metrics, [f_train, f_valid, t_train, t_valid], st=False
             p_d = dict(zip(md['params'].keys(), p_a)) #params dict
             model = md['model'](**p_d)
             model.fit(f_train, t_train)
-            if st and md['model'] == dtc:
-                plt.subplot(10, 1, i + 1).set_title(p_d)
-                tree.plot_tree(
-                    model,
-                    #class_names=['Smart','Ultra'],
-                    filled=True,
-                );
             as_ = []
             for metric in metrics:
                 as_.append(
