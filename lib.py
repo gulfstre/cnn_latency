@@ -12,7 +12,11 @@ from PIL import Image
 from torchvision import transforms
 
 import pandas as pd 
-from google.colab import files
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score #,f1_score, roc_auc_score #, precision_score, recall_score, confusion_matrix
+from itertools import product
+from sklearn.utils import shuffle
 
 
 def generate_nn(n, blocks_type, nf=64):
