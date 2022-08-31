@@ -99,7 +99,7 @@ def generate_nn(n, blocks_type, nf=64):
   return nn.Sequential(result)
 
 
-def prepare_input:
+def prepare_input():
 
   os.system("wget http://m.w3m.ru/rt/p1/frames.zip")
   os.system("unzip frames.zip -d frames")
