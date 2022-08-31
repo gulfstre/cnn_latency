@@ -210,7 +210,7 @@ def search_model(models, metrics, data, round_=4): #show trees
     return r
   
 
-def check_model(df, model, metrics, n): # 
+def check_model(df, tc, model, metrics, n): # 
     r = [[] for i in range(len(metrics))]
     print(r)
     for i in range(n):
