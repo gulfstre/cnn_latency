@@ -117,12 +117,12 @@ def prepare_input():
   return f1('frames')
 
 
-def generate_dataset(len_=1000):
+def generate_dataset(images_paths, len_=1000):
   samples = int(10**(1/2))
   rs = 38
   random.seed(rs)
-  img_idxs = random.sample(range(len(l)), samples)
-  imgs = [Image.open(l[idx]) for idx in img_idxs]
+  img_idxs = random.sample(range(len(images_paths)), samples)
+  imgs = [Image.open(images_paths[idx]) for idx in img_idxs]
 
   convert_tensor = transforms.Compose([
     transforms.Resize((224, 224)),
