@@ -181,8 +181,6 @@ def split(df, tc, rs, ts, vs): # dataframe, target column, random state, test si
   
 def search_model(models, metrics, data, round_=4): #show trees
     f_train, f_valid, t_train, t_valid = data
-    if st:
-        plt.figure(figsize=(30,30 * 10))
     r = [] #result
     for md in models: 
         for i, p_a in tqdm(enumerate(
@@ -212,7 +210,7 @@ def search_model(models, metrics, data, round_=4): #show trees
     return r
   
 
-def check_model(df, model, metrics, n, show_additional_metrics=False): # 
+def check_model(df, model, metrics, n): # 
     r = [[] for i in range(len(metrics))]
     print(r)
     for i in range(n):
@@ -229,12 +227,5 @@ def check_model(df, model, metrics, n, show_additional_metrics=False): #
             r[j].append(ri[0])
             print(ri[0], end=' ')
         print(sum(t_test) / len(t_test))
-        if show_additional_metrics:
-            print(
-                precision_score(t_test, t_pred), 
-                recall_score(t_test, t_pred), 
-                f1_score(t_test, t_pred), 
-                '\n',
-                confusion_matrix(t_test, t_pred),
-            )
+
     return r
