@@ -175,32 +175,6 @@ def split(df, tc, rs, ts, vs): # dataframe, target column, random state, test si
     return f_train, f_valid, f_test, t_train, t_valid, t_test
   
   
- def get_models(par):
-    return [
-        {
-            'model': dtr,
-            'params': {
-                'max_depth': [int(x**1.4) for x in range(1, 8)],
-                'random_state': [rs_m],
-            }
-        },
-        {
-            'model': rfr,
-            'params': {
-                'max_depth': [int(x**1.4) for x in range(1, 8)],
-                'n_estimators': [int((10**.5)**x) for x in range(1, 7)],
-                'random_state': [rs_m],
-            }
-        },
-        {
-            'model': lrc,
-            'params': {
-
-            }
-        },
-    ]
-  
-  
 def search_model(metrics=[r2_score], st=False, round_=4): #show trees
     if st:
         plt.figure(figsize=(30,30 * 10))
