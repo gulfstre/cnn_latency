@@ -17,6 +17,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score #,f1_score, roc_auc_score #, precision_score, recall_score, confusion_matrix
 from itertools import product
 from sklearn.utils import shuffle
+from sklearn.preprocessing import StandardScaler
+
 
 
 def generate_nn(n, blocks_type, nf=64):
@@ -167,7 +169,7 @@ def generate_dataset(images_paths, samples_count=int(10**(1/2)), len_=1000):
   return res
 
 
-def split(df, tc, rs, ts, vs): # dataframe, target column, random state, test size, valid size
+def split(df, tc, rs, ts, vs, scaler=StandardScaler()): # dataframe, target column, random state, test size, valid size
     f_all, t_all = df.drop(tc, axis=1), df[tc] # features, target (all)
     f_tmp, f_test, t_tmp, t_test = train_test_split(
         f_all, t_all, test_size=ts, random_state=rs#, stratify=t_all
@@ -175,6 +177,10 @@ def split(df, tc, rs, ts, vs): # dataframe, target column, random state, test si
     f_train, f_valid, t_train, t_valid = train_test_split(
         f_tmp, t_tmp, test_size=vs, random_state=rs#, stratify=t_tmp
     )
+    if scaler:
+      scaler = StandardScaler()
+      scaler.fit(f_train)
+      f_train, f_valid, f_test = scaler.transform(f_train), scaler.transform(f_valid), scaler.transform(f_test)
     print(f_train.shape, f_valid.shape, f_test.shape, t_train.shape, t_valid.shape, t_test.shape)
     return f_train, f_valid, f_test, t_train, t_valid, t_test
   
