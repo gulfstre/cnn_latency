@@ -175,7 +175,7 @@ def split(df, tc, rs, ts, vs): # dataframe, target column, random state, test si
     return f_train, f_valid, f_test, t_train, t_valid, t_test
   
   
-def search_model(metrics=[r2_score], st=False, round_=4): #show trees
+def search_model(metrics, st=False, round_=4): #show trees
     if st:
         plt.figure(figsize=(30,30 * 10))
     r = [] #result
