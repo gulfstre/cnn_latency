@@ -216,8 +216,6 @@ def check_model(df, tc, ts, model, metrics, n): #
     for i in range(n):
         f_train, f_valid, f_test, t_train, t_valid, t_test = split(df, tc, random.randint(0,100), ts, 1e-5)
         model.fit(f_train, t_train)
-        if isinstance(model, lrc):
-          print(model.coef_)
         t_pred = model.predict(f_test)
         for j, metric in enumerate(metrics):
             ri = round(
