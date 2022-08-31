@@ -117,11 +117,10 @@ def prepare_input():
   return f1('frames')
 
 
-def generate_dataset(images_paths, len_=1000):
-  samples = int(10**(1/2))
+def generate_dataset(images_paths, samples_count=int(10**(1/2)), len_=1000):
   rs = 38
   random.seed(rs)
-  img_idxs = random.sample(range(len(images_paths)), samples)
+  img_idxs = random.sample(range(len(images_paths)), samples_count)
   imgs = [Image.open(images_paths[idx]) for idx in img_idxs]
 
   convert_tensor = transforms.Compose([
@@ -164,3 +163,106 @@ def generate_dataset(images_paths, len_=1000):
   return res
 
 
+def split(df, tc, rs, ts, vs): # dataframe, target column, random state, test size, valid size
+    f_all, t_all = df.drop(tc, axis=1), df[tc] # features, target (all)
+    f_tmp, f_test, t_tmp, t_test = train_test_split(
+        f_all, t_all, test_size=ts, random_state=rs#, stratify=t_all
+    ) 
+    f_train, f_valid, t_train, t_valid = train_test_split(
+        f_tmp, t_tmp, test_size=vs, random_state=rs#, stratify=t_tmp
+    )
+    print(f_train.shape, f_valid.shape, f_test.shape, t_train.shape, t_valid.shape, t_test.shape)
+    return f_train, f_valid, f_test, t_train, t_valid, t_test
+  
+  
+ def get_models(par):
+    return [
+        {
+            'model': dtr,
+            'params': {
+                'max_depth': [int(x**1.4) for x in range(1, 8)],
+                'random_state': [rs_m],
+            }
+        },
+        {
+            'model': rfr,
+            'params': {
+                'max_depth': [int(x**1.4) for x in range(1, 8)],
+                'n_estimators': [int((10**.5)**x) for x in range(1, 7)],
+                'random_state': [rs_m],
+            }
+        },
+        {
+            'model': lrc,
+            'params': {
+
+            }
+        },
+    ]
+  
+  
+def search_model(metrics=[r2_score], st=False, round_=4): #show trees
+    if st:
+        plt.figure(figsize=(30,30 * 10))
+    r = [] #result
+    for md in models: 
+        for i, p_a in tqdm(enumerate(
+            list(product( #params array
+                *md['params'].values()
+            ))
+        )):
+            p_d = dict(zip(md['params'].keys(), p_a)) #params dict
+            model = md['model'](**p_d)
+            model.fit(f_train, t_train)
+            if st and md['model'] == dtc:
+                plt.subplot(10, 1, i + 1).set_title(p_d)
+                tree.plot_tree(
+                    model,
+                    #class_names=['Smart','Ultra'],
+                    filled=True,
+                );
+            as_ = []
+            for metric in metrics:
+                as_.append(
+                    round(
+                        metric(
+                            t_valid,
+                            model.predict(f_valid),
+                        ),
+                        round_,
+                    )
+                )
+            r.append([
+                as_,
+                model, 
+                p_d
+            ])
+    return r
+  
+
+def check_model(df, model, metrics, n, show_additional_metrics=False): # 
+    r = [[] for i in range(len(metrics))]
+    print(r)
+    for i in range(n):
+        f_train, f_valid, f_test, t_train, t_valid, t_test = split(df, tc, random.randint(0,100), ts, 1e-5)
+        model.fit(f_train, t_train)
+        if isinstance(model, lrc):
+          print(model.coef_)
+        t_pred = model.predict(f_test)
+        for j, metric in enumerate(metrics):
+            ri = round(
+              metric(t_test, t_pred),
+              4,
+            ),
+            r[j].append(ri[0])
+            print(ri[0], end=' ')
+        print(sum(t_test) / len(t_test))
+        if show_additional_metrics:
+            print(
+                precision_score(t_test, t_pred), 
+                recall_score(t_test, t_pred), 
+                f1_score(t_test, t_pred), 
+                '\n',
+                confusion_matrix(t_test, t_pred),
+            )
+    return r
