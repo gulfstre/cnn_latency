@@ -29,7 +29,7 @@
 
 ## Предсказание времени выполнения
 
-Попробуем несколько простых моделей: LinearRegression, DecisionTreeRegressor, RandomForestRegressor.
+Попробуем несколько простых моделей: LinearRegression, DecisionTreeRegressor, RandomForestRegressor. Переберём несколько вариантов основных гиперпараметров регрессоров. Валидацию будем проводить на одном разбиении, оценкe - по метрике r2_score. Тестирование результатов на нескольких вариантах random_state split и random_state model.  
 
 
 ## Результаты и дальнейшие исследования
