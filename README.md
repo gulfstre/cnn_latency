@@ -7,7 +7,7 @@
 
 ## Генерация моделей
 
-<img src="github/cd3cf4f38d.jpeg" width="900" style="max-width: 100%;">
+<img src=".github/cd3cf4f38d.jpeg" width="900" style="max-width: 100%;">
 
 Будем варьировать основные параметры в рамках архитектуры: 
   - тип используемых блоков (выделены красным)
