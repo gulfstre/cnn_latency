@@ -181,7 +181,7 @@ def split(df, tc, rs, ts, vs, scaler=StandardScaler()): # dataframe, target colu
       scaler = StandardScaler()
       scaler.fit(f_train)
       f_train, f_valid, f_test = scaler.transform(f_train), scaler.transform(f_valid), scaler.transform(f_test)
-    return [f_train, f_valid, f_test, t_train, t_valid, t_test], 
+    return [f_train, f_valid, f_test, t_train, t_valid, t_test], \
       [f_train.shape, f_valid.shape, f_test.shape, t_train.shape, t_valid.shape, t_test.shape]
   
   
