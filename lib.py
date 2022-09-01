@@ -218,7 +218,6 @@ def search_model(models, metrics, data, round_=4): #show trees
 
 def check_model(df, tc, ts, model, metrics, n): # 
     r = [[] for i in range(len(metrics))]
-    print(r)
     for i in range(n):
         f_train, f_valid, f_test, t_train, t_valid, t_test = split(df, tc, random.randint(0,100), ts, 1e-5)[0]
         model.fit(f_train, t_train)
